@@ -51,21 +51,31 @@ final class SettingsManager: ObservableObject {
     }
     
     func revertFolderHandlerToFinder() {
-        let folderUTI = UTType.folder.identifier as CFString
         let finderID = "com.apple.finder" as CFString
         
-        let status = LSSetDefaultRoleHandlerForContentType(
-            folderUTI,
-            .viewer,
+        let folderStatus = LSSetDefaultRoleHandlerForContentType(
+            UTType.folder.identifier as CFString,
+            .all,
             finderID
         )
         
-        if status == noErr {
-            print("✅ Finder restored as default")
+        let volumeStatus = LSSetDefaultRoleHandlerForContentType(
+            UTType.volume.identifier as CFString,
+            .all,
+            finderID
+        )
+        
+        if folderStatus == noErr && volumeStatus == noErr {
+            print("✅ Finder restored as default for Folders and Volumes")
         } else {
-            print("❌ Failed:", status)
+            print("❌ Failed. Error Code: \(folderStatus)")
+            
+            if folderStatus == -54 {
+                print("⚠️ Permission Error: Disable 'App Sandbox' in Signing & Capabilities.")
+            }
         }
     }
+    
     func setAsDefaultFileManagerForFolders() {
         guard let bundleID = Bundle.main.bundleIdentifier as CFString? else { return }
         
