@@ -43,7 +43,7 @@ struct ComfyFileListContent: View {
 
     var body: some View {
         Table(
-            folderContents,
+            of: ComfyFolder.self,
             selection: $comfyFileManager.selectedItemsInListView,
             sortOrder: $sortOrder
         ) {
@@ -84,6 +84,14 @@ struct ComfyFileListContent: View {
             
             /// Kind
             TableColumn("Kind", value: \.kind)
+        } rows: {
+            ForEach(folderContents) { content in
+                TableRow(content)
+                    .draggable(content)
+            }
+            .dropDestination(for: ComfyFolder.self, action: { index, folder in
+                print("Dropped: \(folder) on row: \(index)")
+            })
         }
         .onDisappear {
             NSTableView.disableTableCatcherSwizzle()
@@ -94,6 +102,8 @@ struct ComfyFileListContent: View {
                 let doubleClickedItem = folderContents[row]
                 if doubleClickedItem.isFolder {
                     self.comfyFileManager.setSelectedFolder(doubleClickedItem)
+                } else {
+                    self.comfyFileManager.open(doubleClickedItem)
                 }
             }
         }

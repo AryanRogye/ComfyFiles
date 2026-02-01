@@ -7,8 +7,9 @@
 
 import Foundation
 import UniformTypeIdentifiers
+import CoreTransferable
 
-struct ComfyFolder: Identifiable, Hashable, Sendable {
+struct ComfyFolder: Identifiable, Hashable, Sendable, Transferable, Codable {
     var id : String { url.path }
     let url : URL
     
@@ -78,5 +79,10 @@ struct ComfyFolder: Identifiable, Hashable, Sendable {
     
     init(_ url: URL) {
         self.url = url
+    }
+    
+    static var draggableType = UTType(exportedAs: "com.aryanrogye.ComfyFiles.ComfyFolder")
+    static var transferRepresentation: some TransferRepresentation {
+        CodableRepresentation(contentType: ComfyFolder.draggableType)
     }
 }

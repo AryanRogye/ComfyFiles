@@ -101,10 +101,24 @@ extension ComfyFileManager {
         else { return }
 
         backHistory.append(current)
-        setSelectedFolder(next, onUndo: true)
+        setSelectedFolder(next, onUndo: true, onForward: true)
     }
     
-    public func setSelectedFolder(_ folder: ComfyFolder, onUndo: Bool = false) {
+    public func open(_ folder: ComfyFolder) {
+        guard folder.isFile else { return }
+        
+        NSWorkspace.shared.open(folder.url)
+    }
+    
+    public func setSelectedFolder(
+        _ folder: ComfyFolder,
+        onUndo: Bool = false,
+        onForward: Bool = false
+    ) {
+        if !onForward && !onUndo {
+            /// clear forward because we broke it by going forward or undoing
+            forwardHistory.removeAll()
+        }
         if !onUndo {
             if let selectedFolder {
                 if let last = selectedFolder.comfyFolder {

@@ -2,27 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    
 	<key>CFBundleDocumentTypes</key>
 	<array>
-        
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>Folder</string>
-            
-            <key>LSItemContentTypes</key>
-            <array>
-                <string>public.folder</string>
-            </array>
-            
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
-            
 			<key>LSHandlerRank</key>
 			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.folder</string>
+			</array>
 		</dict>
-        
 	</array>
+    
+    <key>UTExportedTypeDeclarations</key>
+    <array>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>com.aryanrogye.ComfyFiles.ComfyFolder</string>
+            
+            <key>UTTypeDescription</key>
+            <string>Comfy Folder Reference</string>
+            
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.url</string>
+                <string>public.item</string>
+            </array>
+        </dict>
+    </array>
     
 </dict>
 </plist>
