@@ -40,7 +40,15 @@ final class ComfyFileManager {
     var sidebarMainFolders: [ComfyFolder] = []
     
     /// Selections
-    var selectedFolder: Selection?
+    var selectedFolder: Selection? {
+        didSet {
+            if let selectedFolder {
+                if let comfyFolder = selectedFolder.comfyFolder {
+                    self.saveSelectedFolder(comfyFolder)
+                }
+            }
+        }
+    }
     var selectedFolderContents: [ComfyFolder] = []
     
     var selectedItemsInListView: Set<String> = []
@@ -57,6 +65,7 @@ final class ComfyFileManager {
     var forwardHistory: [ComfyFolder] = []
     
     init() {
+        loadSavedFolder()
         self.reload()
         self.checkFullDiskAccessStatus()
     }
@@ -71,6 +80,16 @@ final class ComfyFileManager {
         recentsQuery?.stop()
     }
     
+    private func saveSelectedFolder(_ folder: ComfyFolder) {
+        UserDefaults.standard.set(folder.url, forKey: "LastSelectedFolder")
+    }
+    private func loadSavedFolder() {
+        if let folder = UserDefaults.standard.url(forKey: "LastSelectedFolder") {
+            let comfyFolder = ComfyFolder(folder)
+            self.selectedFolder = .folder(comfyFolder)
+            setSelectedFolder(comfyFolder)
+        }
+    }
 }
 
 // MARK: - Set Selected

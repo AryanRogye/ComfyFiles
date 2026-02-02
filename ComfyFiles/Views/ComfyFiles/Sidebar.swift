@@ -16,27 +16,44 @@ struct Sidebar: View {
     
     var body: some View {
         List {
-            Button(action: {
-                comfyFileManager.setSelectedRecents()
-            }) {
-                Text("Recents")
-                    .padding(.vertical, 4)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            
-            ForEach(comfyFileManager.sidebarMainFolders) { item in
-                SidebarRow(
-                    dragging: $dragging,
-                    item: item,
-                    comfyFileManager: comfyFileManager
-                )
-            }
+            home
+            favorites
         }
         .listStyle(.sidebar)
         .scrollContentBackground(.hidden)
         .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+    }
+    
+    private var favorites: some View {
+        ForEach(comfyFileManager.sidebarMainFolders) { item in
+            SidebarRow(
+                dragging: $dragging,
+                item: item,
+                comfyFileManager: comfyFileManager
+            )
+        }
+    }
+    
+    private var home: some View {
+        Button(action: { }) {
+            Text("Home")
+                .padding(.vertical, 4)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+    
+    private var recents: some View {
+        Button(action: {
+            comfyFileManager.setSelectedRecents()
+        }) {
+            Text("Recents")
+                .padding(.vertical, 4)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -76,36 +93,6 @@ private struct SidebarRow: View {
         .animation(.snappy, value: comfyFileManager.selectedFolder)
     }
 }
-
-private struct SidebarReorderDropDelegate: DropDelegate {
-    let item: ComfyFolder
-    @Binding var items: [ComfyFolder]
-    @Binding var dragging: ComfyFolder?
-    
-    func dropEntered(info: DropInfo) {
-        guard let dragging, dragging != item,
-              let from = items.firstIndex(of: dragging),
-              let to = items.firstIndex(of: item)
-        else { return }
-        
-        withAnimation(.snappy) {
-            items.move(fromOffsets: IndexSet(integer: from),
-                       toOffset: to > from ? to + 1 : to)
-        }
-    }
-    
-    func performDrop(info: DropInfo) -> Bool {
-        DispatchQueue.main.async {
-            dragging = nil
-        }
-        return true
-    }
-    
-    func dropUpdated(info: DropInfo) -> DropProposal? {
-        DropProposal(operation: .move)
-    }
-}
-
 
 struct VisualEffectView: NSViewRepresentable {
     var material: NSVisualEffectView.Material = .sidebar

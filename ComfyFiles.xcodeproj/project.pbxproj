@@ -18,7 +18,7 @@
 		9B2F7DDF2F2FE8C100DB2A6B /* Exceptions for "ComfyFiles" folder in "ComfyFiles" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Config/Info.plist,
 			);
 			target = 9B2F7CBB2F2D670300DB2A6B /* ComfyFiles */;
 		};
@@ -280,7 +280,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ComfyFiles/Info.plist;
+				INFOPLIST_FILE = ComfyFiles/Config/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -312,7 +312,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ComfyFiles/Info.plist;
+				INFOPLIST_FILE = ComfyFiles/Config/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
